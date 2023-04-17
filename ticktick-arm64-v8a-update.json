@@ -1,6 +1,6 @@
 {
-  "version": "v6.5.3.1",
-  "versionCode": 3,
-  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/3/ticktick-revanced-magisk-v6.5.3.1-arm64-v8a.zip",
+  "version": "v6.5.4.2",
+  "versionCode": 4,
+  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/4/ticktick-revanced-magisk-v6.5.4.2-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/revanced-magisk-module/update/build.md"
 }

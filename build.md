@@ -1,38 +1,32 @@
 CLI: revanced-cli-2.21.0-all.jar  
-Integrations: revanced-integrations-0.104.0.apk  
-Patches: revanced-patches-2.170.0.jar  
+Integrations: revanced-integrations-0.107.0.apk  
+Patches: revanced-patches-2.173.0.jar  
 
-### [2.170.0](https://github.com/revanced/revanced-patches/compare/v2.169.0...v2.170.0) (2023-04-24)
-### Bug Fixes
-* **enable-android-debugging:** don't include by default ([b2856f7](https://github.com/revanced/revanced-patches/commit/b2856f7f71640f78dfc11b3dff90a58add48d605))
-* **twitch/block-embedded-ads:** correct spelling mistake ([#1962](https://github.com/revanced/revanced-patches/issues/1962)) ([6138c2a](https://github.com/revanced/revanced-patches/commit/6138c2ac24f586137bc4ef974a6600d24ebdda3e))
-* **youtube/hide-video-action-buttons:** fix hide action buttons not working for some users ([#1959](https://github.com/revanced/revanced-patches/issues/1959)) ([3ab5842](https://github.com/revanced/revanced-patches/commit/3ab5842ebbee3381604efcaa454ea5c49d3a5363))
-* **youtube/sponsorblock:** correct spelling mistake ([#1941](https://github.com/revanced/revanced-patches/issues/1941)) ([d9d0fe7](https://github.com/revanced/revanced-patches/commit/d9d0fe7e236ccce348e8b3214454d29656a853c0))
-* **youtube/sponsorblock:** use lowercase letters for URL string ([#1942](https://github.com/revanced/revanced-patches/issues/1942)) ([b58842a](https://github.com/revanced/revanced-patches/commit/b58842a5f6f3fbcf06e87821bbc1ad3be7ca2fc0))
-* **youtube/tablet-mini-player:** throw if fingerprint fails to resolve ([642eef3](https://github.com/revanced/revanced-patches/commit/642eef39e8e8eeb1f95980f95b83e79faffe3a18))
+### [2.173.0](https://github.com/revanced/revanced-patches/compare/v2.172.0...v2.173.0) (2023-05-02)
 ### Features
-* **youtube/wide-searchbar:** rename patch ([bb5885e](https://github.com/revanced/revanced-patches/commit/bb5885eca4b750f15776de9099fb4dd83f6d70f5))
-* **youtube:** bump compatibility to `18.15.40` ([ad82fcd](https://github.com/revanced/revanced-patches/commit/ad82fcdb63c7cc77e7387b7f0da95b005c90ce31))
-* **youtube:** constrain patches to `18.15.40` ([c0c10de](https://github.com/revanced/revanced-patches/commit/c0c10dec3446d35e20b17c25510cddcbe07b494f))
-* **youtube:** remove non working patch `hide-my-mix` ([6ae0f0b](https://github.com/revanced/revanced-patches/commit/6ae0f0b466322c4d60feb20ed0e809783452b9d4))
-* **youtube:** support version `18.15.40` ([c3614ab](https://github.com/revanced/revanced-patches/commit/c3614ab1d10a70fdb0813d7249866d696b28088f))
+* **youtube/create-button:** switch create with notifications button ([385ceda](https://github.com/revanced/revanced-patches/commit/385ceda61f586f24b11a284688f55758ef5b4e74))
+* **youtube/theme:** change seekbar color via preference ([9b465d9](https://github.com/revanced/revanced-patches/commit/9b465d95887863f6b42baa6b710ed98c97383a82))
+* **youtube/theme:** theme seekbar when clicked ([691a231](https://github.com/revanced/revanced-patches/commit/691a231d99b3b2fbe446fc7edb7a88c7a3127037))
+* **youtube:** `navigation-buttons` patch ([4bece31](https://github.com/revanced/revanced-patches/commit/4bece31f56eb340933ad26da3d1bfc902ea8569f))
+* **youtube:** bump compatibility to `18.16.37` ([fe3fdd5](https://github.com/revanced/revanced-patches/commit/fe3fdd5c6cb186bcebc2f86b1d5b597109b25cb6))
+* **youtube:** support version `18.16.37` ([8beb5ea](https://github.com/revanced/revanced-patches/commit/8beb5ea860284be915c0ef0c6039821a50c14fa8))
 
   
 **App Versions:**  
-YouTube: 18.15.40  
 Music (arm64-v8a): 5.39.52  
+YouTube: 18.16.37  
 Twitter: 9.71.0-release.0  
 Reddit: 2023.12.0  
 Twitch: 14.6.1  
 TikTok: 27.8.3  
 Spotify (arm64-v8a): 8.8.28.409  
-Instagram (arm64-v8a): 280.0.0.18.114  
+Instagram (arm64-v8a): 281.0.0.19.105  
 Citra (arm64-v8a): bed6a4f12  
 Backdrops (arm64-v8a): 4.52  
 WarnWetter: 4.1.1  
 Windyapp: 34.0.2  
 IconPackStudio: 2.1 build 028  
-TickTick (arm64-v8a): 6.6.0.2  
+TickTick (arm64-v8a): 6.6.1.1  
 Tasker: 6.0.9  
 
 Install [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or Music  

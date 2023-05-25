@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Get the current date in YYYY-MM-DD format
+current_date=$(date +%Y-%m-%d)
+
 set -euo pipefail
 trap "rm -rf temp/tmp.*; exit 130" INT
 
@@ -35,7 +38,7 @@ CONF_PATCHES_VER=$(toml_get "$main_config_t" patches-version) || CONF_PATCHES_VE
 CONF_INTEGRATIONS_VER=$(toml_get "$main_config_t" integrations-version) || CONF_INTEGRATIONS_VER=
 DEF_PATCHES_SRC=$(toml_get "$main_config_t" patches-source) || DEF_PATCHES_SRC="revanced/revanced-patches"
 DEF_INTEGRATIONS_SRC=$(toml_get "$main_config_t" integrations-source) || DEF_INTEGRATIONS_SRC="revanced/revanced-integrations"
-DEF_RV_BRAND=$(toml_get "$main_config_t" rv-brand) || DEF_RV_BRAND="ReVanced"
+DEF_RV_BRAND="ReVanced $current_date"
 # -- Main config --
 mkdir -p $TEMP_DIR
 

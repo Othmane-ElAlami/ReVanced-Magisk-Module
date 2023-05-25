@@ -10,6 +10,7 @@ Twitch: 14.6.1
 TikTok: 27.8.3  
 Spotify: 8.8.36.522  
 Instagram: 284.0.0.22.85  
+Messenger: 410.0.0.17.85  
 Citra: bed6a4f12  
 Backdrops: 4.52  
 WarnWetter: 4.1.1  
@@ -19,8 +20,6 @@ TickTick: 6.6.3.1
 Tasker: 6.1.33  
 
 Install [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or Music  
-
-[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)  
 
 ---
 Changelog:  

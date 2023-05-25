@@ -156,7 +156,6 @@ if music_arm64_t=$(toml_get_table "Music-arm64"); then music_arm64_mode=$(toml_g
 if [ "$youtube_mode" != module ] || [ "$music_arm_mode" != module ] || [ "$music_arm64_mode" != module ]; then
 	log "\nInstall [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or Music"
 fi
-log "\n[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)"
 log "\n---\nChangelog:"
 log "$(cat $TEMP_DIR/*-rv/changelog.md)"
 

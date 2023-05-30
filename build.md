@@ -8,8 +8,8 @@ Twitter: 9.90.0-release.0
 Reddit: 2023.20.1  
 Twitch: 14.6.1  
 TikTok: 27.8.3  
-Spotify (arm64-v8a): 8.8.36.522  
-Spotify (arm-v7a): 8.8.36.522  
+Spotify (arm64-v8a): 8.8.38.444  
+Spotify (arm-v7a): 8.8.38.444  
 Instagram (arm64-v8a): 284.0.0.22.85  
 Instagram (arm-v7a): 284.0.0.22.85  
 Messenger: 410.0.0.17.85  

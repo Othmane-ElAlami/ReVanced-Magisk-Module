@@ -1,18 +1,14 @@
 YouTube: 18.19.35  
 YouTube-Extended: 18.17.43  
-Music (arm64-v8a): 5.39.52  
-Music (arm-v7a): 5.39.52  
-Music-Extended (arm64-v8a): 6.03.51  
-Music-Extended (arm-v7a): 6.03.51  
-Twitter: 9.90.0-release.0  
-Reddit: 2023.21.0  
+Music: 5.39.52  
+Music-Extended: 6.04.51  
+Twitter: 9.91.0-release.0  
 Twitch: 14.6.1  
-TikTok: 29.7.4  
-Spotify (arm64-v8a): 8.8.38.444  
-Instagram (arm64-v8a): 285.0.0.25.62  
-Spotify (arm-v7a): 8.8.38.444  
-Instagram (arm-v7a): 285.0.0.25.62  
-Messenger: 410.0.0.17.85  
+TikTok: 29.8.2  
+Reddit: 2023.21.0  
+Messenger: 409.1.0.20.103  
+Instagram: 285.0.0.25.62  
+Spotify: 8.8.38.444  
 
 Install [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or Music  
 

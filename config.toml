@@ -46,10 +46,6 @@ build-mode = "both"
 excluded-patches = "hide-views-stats"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/twitter-inc/twitter/"
 
-[Reddit]
-build-mode = "both"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit/"
-
 [Twitch]
 build-mode = "both"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
@@ -58,21 +54,25 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
 build-mode = "both"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/"
 
-[Spotify]
+[Reddit]
 build-mode = "both"
-arch = "arm64-v8a"
-uptodown-dlurl = "https://spotify.en.uptodown.com/android"
-
-[Instagram]
-build-mode = "both"
-arch = "arm64-v8a"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit/"
 
 [Messenger]
 build-mode = "both"
 arch = "arm64-v8a"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger/"
 version = "409.1.0.20.103"                                              # 410 is broken
+
+[Instagram]
+build-mode = "both"
+arch = "arm64-v8a"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/"
+
+[Spotify]
+build-mode = "both"
+arch = "arm64-v8a"
+uptodown-dlurl = "https://spotify.en.uptodown.com/android"
 
 [Citra]
 enabled = false

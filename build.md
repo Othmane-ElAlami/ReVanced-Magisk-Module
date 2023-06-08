@@ -1,16 +1,16 @@
 YouTube: 18.19.35  
 YouTube-Extended: 18.17.43  
 Music: 5.39.52  
-Music-Extended: 6.04.51  
-Twitter: 9.91.0-release.0  
+Music-Extended: 6.05.51  
+Twitter: 9.92.0-release.0  
 Twitch: 14.6.1  
-TikTok: 29.8.2  
-Reddit: 2023.21.0  
-Messenger: 409.1.0.20.103  
-Instagram: 285.0.0.25.62  
-Spotify: 8.8.38.444  
+TikTok: 29.9.2  
+Reddit: 2023.22.0  
+Messenger: 412.0.0.15.69  
+Instagram: 286.0.0.20.69  
+Spotify: 8.8.40.470  
 
-Install [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) to be able to use non-root YouTube or Music  
+Install [Vanced Microg](https://github.com/TeamVanced/VancedMicroG/releases) for non-root YouTube or YT Music  
 
 ---
 Changelog:  

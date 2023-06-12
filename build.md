@@ -6,7 +6,6 @@ Twitter: 9.92.0-release.0
 Twitch: 14.6.1  
 TikTok: 29.9.4  
 Reddit: 2023.22.0  
-Messenger: 412.0.0.15.69  
 Instagram: 275.0.0.27.98  
 Spotify: 8.8.40.470  
 

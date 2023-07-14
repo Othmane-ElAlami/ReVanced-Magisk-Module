@@ -119,6 +119,10 @@ _req() {
 	else
 		local dlp
 		dlp="$(dirname "$2")/tmp.$(basename "$2")"
+		if [ -f "$dlp" ]; then
+			while [ -f "$dlp" ]; do sleep 1; done
+			return
+		fi
 		wget -nv -O "$dlp" --header="$3" "$1"
 		mv -f "$dlp" "$2"
 	fi
@@ -145,6 +149,7 @@ get_patch_last_supported_ver() {
 	inc_sel=${inc_sel:-false}
 	if [ "$4" = false ]; then inc_sel="${inc_sel} or .excluded==false"; fi
 	jq -r ".[]
+			| .name |= ascii_downcase | .name |= gsub(\"\\\\s\";\"-\")
 			| select(.compatiblePackages[].name==\"${1}\")
 			| select(${inc_sel})
 			| select(${exc_sel:-true})
@@ -358,39 +363,38 @@ build_rv() {
 				break
 			fi
 		done
-		if [ ! -f "$stock_apk" ]; then
-			epr "ERROR: Could not download ${table} from any provider"
-			return 0
-		fi
+		if [ ! -f "$stock_apk" ]; then return 0; fi
 	fi
 	log "${table}: ${version}"
 
 	if [ "${args[merge_integrations]}" = true ]; then p_patcher_args+=("-m ${args[integ]}"); fi
 	local microg_patch
-	microg_patch=$(jq -r ".[] | select(.compatiblePackages[].name==\"${pkg_name}\") | .name" "${args[ptjs]}" | grep -F microg || :)
+	microg_patch=$(jq -r ".[] | select(.compatiblePackages[].name==\"${pkg_name}\") | .name" "${args[ptjs]}" | grep -iF microg || :)
 	if [ "$microg_patch" ]; then
+		microg_patch="${microg_patch,,}"
+		microg_patch="${microg_patch// /-}"
 		p_patcher_args=("${p_patcher_args[@]//-[ei] ${microg_patch}/}")
 	fi
 
 	local stock_bundle_apk="${TEMP_DIR}/${pkg_name}-${version_f}-${arch_f}-bundle.apk"
 	local is_bundle=false
-	if [ "$mode_arg" = module ] || [ "$mode_arg" = both ]; then
-		if [ -f "$stock_bundle_apk" ]; then
-			is_bundle=true
-		elif [ "$dl_from" = apkmirror ]; then
-			pr "Downloading '${table}' bundle from APKMirror"
-			if dl_apkmirror "${args[apkmirror_dlurl]}" "$version" "$stock_bundle_apk" BUNDLE "" ""; then
-				if (($(stat -c%s "$stock_apk") - $(stat -c%s "$stock_bundle_apk") > 10000000)); then
-					pr "'${table}' bundle was downloaded successfully and will be used for the module"
-					is_bundle=true
-				else
-					pr "'${table}' bundle was downloaded but will not be used"
-				fi
-			else
-				pr "'${table}' bundle was not found"
-			fi
-		fi
-	fi
+	# if [ "$mode_arg" = module ] || [ "$mode_arg" = both ]; then
+	# 	if [ -f "$stock_bundle_apk" ]; then
+	# 		is_bundle=true
+	# 	elif [ "$dl_from" = apkmirror ]; then
+	# 		pr "Downloading '${table}' bundle from APKMirror"
+	# 		if dl_apkmirror "${args[apkmirror_dlurl]}" "$version" "$stock_bundle_apk" BUNDLE "" ""; then
+	# 			if (($(stat -c%s "$stock_apk") - $(stat -c%s "$stock_bundle_apk") > 10000000)); then
+	# 				pr "'${table}' bundle was downloaded successfully and will be used for the module"
+	# 				is_bundle=true
+	# 			else
+	# 				pr "'${table}' bundle was downloaded but will not be used"
+	# 			fi
+	# 		else
+	# 			pr "'${table}' bundle was not found"
+	# 		fi
+	# 	fi
+	# fi
 
 	if [ "$mode_arg" = module ]; then
 		build_mode_arr=(module)

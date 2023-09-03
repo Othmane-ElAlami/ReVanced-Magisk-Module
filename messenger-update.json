@@ -1,6 +1,6 @@
 {
-  "version": "v420.0.0.15.50",
-  "versionCode": 24,
-  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/24/messenger-revanced-magisk-v420.0.0.15.50-arm64-v8a.zip",
+  "version": "v424.0.0.25.113",
+  "versionCode": 27,
+  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/27/messenger-revanced-magisk-v424.0.0.25.113-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/revanced-magisk-module/update/build.md"
 }

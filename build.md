@@ -1,7 +1,12 @@
-Twitter: 10.55.1-release.0  
-Twitch: 16.9.1  
+Music: 7.03.52  
+Music-Extended: 7.13.52  
 YouTube: 19.16.39  
 YouTube-Extended: 19.16.39  
+Twitter: 10.55.1-release.0  
+Twitch: 16.9.1  
+Facebook: 478.0.0.41.86  
+Messenger: 439.0.0.29.119  
+Instagram: 345.0.0.48.95  
 Reddit-Extended: 2024.17.0  
 TikTok: 32.5.3  
 

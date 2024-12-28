@@ -1,6 +1,7 @@
 GooglePhotos: 7.11.0.705590205  
 IconPackStudio: 2.2 build 016  
 Instagram: 361.0.0.46.88  
+MemeGenerator: 4.6377  
 Messenger: 439.0.0.29.119  
 Music: 7.29.52  
 

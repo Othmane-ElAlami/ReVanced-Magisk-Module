@@ -1,7 +1,9 @@
+Facebook: 499.0.0.31.60  
 IconPackStudio: 2.2 build 016  
 MemeGenerator: 4.6377  
+Messenger: 439.0.0.29.119  
 Music: 7.29.52  
-Pixiv: 6.132.1  
+Pixiv: 6.134.1  
 
 Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube and YT Music APKs  
 Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) to detach root ReVanced YouTube and YT Music from Play Store  
@@ -9,5 +11,5 @@ Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) to detach root ReVanc
 [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)
   
 CLI: j-hc/revanced-cli-5.0.0-all.jar  
-Patches: ReVanced/patches-5.10.0.rvp  
-[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v5.10.0)  
+Patches: ReVanced/patches-5.11.0.rvp  
+[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v5.11.0)  

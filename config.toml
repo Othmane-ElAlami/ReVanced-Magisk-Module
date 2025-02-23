@@ -20,7 +20,7 @@ uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 build-mode = "both"
 arch = "arm64-v8a"
 version = "auto"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/photos/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/photos"
 uptodown-dlurl = "https://google-photos.en.uptodown.com/android"
 
 [Music-Extended]
@@ -43,7 +43,7 @@ build-mode = "both"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 
 [Twitch]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 arch = "arm64-v8a"
 build-mode = "both"
@@ -54,76 +54,81 @@ arch = "arm64-v8a"
 build-mode = "both"
 
 [TikTok]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tiktok/"
+app-name = "TikTok"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [Messenger]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [Spotify]
+app-name = "Spotify"
+# apkmirror-dlurl = "https://www.apkmirror.com/apk/spotify-ab/spotify"
 uptodown-dlurl = "https://spotify.en.uptodown.com/android"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [IconPackStudio]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [Facebook]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/facebook/"
-arch = "arm64-v8a"
+app-name = "Facebook"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/facebook"
 build-mode = "both"
 
 [Instagram]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram/"
-arch = "arm64-v8a"
+app-name = "Instagram"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 build-mode = "both"
 
 [Reddit]
-apkmirror-dlurl = "https://apkmirror.com/apk/redditinc/reddit/"
-arch = "arm64-v8a"
+app-name = "Reddit"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit"
 build-mode = "both"
 
 [Duolingo]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo/"
-arch = "arm64-v8a"
+app-name = "Duolingo"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
 build-mode = "both"
 
-[AdobeLightroom]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom/"
+[Lightroom]
+app-name = "Adobe Lightroom"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [MemeGenerator]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/zombodroid/meme-generator-free/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/zombodroid/meme-generator-free"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [Pixiv]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/pixiv-inc/pixiv/"
+app-name = "Pixiv"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pixiv-inc/pixiv"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [RAR]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar/"
-arch = "arm64-v8a"
+app-name = "RAR"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar"
 build-mode = "both"
 
 [SoundCloud]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/"
-arch = "arm64-v8a"
+app-name = "SoundCloud"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
 build-mode = "both"
 
 [Tumblr]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/tumblr-inc/tumblr/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tumblr-inc/tumblr"
 arch = "arm64-v8a"
 build-mode = "both"
 
 [Yuka]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/yuka-apps/yuka-food-cosmetic-scan/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/yuka-apps/yuka-food-cosmetic-scan"
 arch = "arm64-v8a"
 build-mode = "both"

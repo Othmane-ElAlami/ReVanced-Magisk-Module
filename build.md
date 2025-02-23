@@ -1,4 +1,4 @@
-GooglePhotos: 7.17.0.725321504  
+GooglePhotos: 7.18.0.729565054  
 IconPackStudio: 2.2 build 016  
 MemeGenerator: 4.6377  
 Messenger: 439.0.0.29.119  

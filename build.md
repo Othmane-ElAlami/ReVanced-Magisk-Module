@@ -1,4 +1,4 @@
-GooglePhotos: 7.22.0.740933857  
+GooglePhotos: 7.24.0.746524260  
 IconPackStudio: 2.2 build 016  
 MemeGenerator: 4.6377  
 Messenger: 439.0.0.29.119  
@@ -10,5 +10,5 @@ Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) to detach root ReVanc
 [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)
   
 CLI: j-hc/revanced-cli-5.0.0-all.jar  
-Patches: ReVanced/patches-5.18.0.rvp  
-[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v5.18.0)  
+Patches: ReVanced/patches-5.19.0.rvp  
+[Changelog](https://github.com/ReVanced/revanced-patches/releases/tag/v5.19.0)  

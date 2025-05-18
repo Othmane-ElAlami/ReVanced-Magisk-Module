@@ -1,6 +1,6 @@
 {
-  "version": "v364.0.0.18.86 (97)",
-  "versionCode": 97,
-  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/97/instagram-revanced-magisk-v364.0.0.18.86-arm64-v8a.zip",
+  "version": "v380.0.0.49.84 (patches: 5.23.0)",
+  "versionCode": 116,
+  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/116/instagram-revanced-magisk-v380.0.0.49.84-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/revanced-magisk-module/update/build.md"
 }

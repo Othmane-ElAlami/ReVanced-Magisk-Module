@@ -1,6 +1,6 @@
 {
-  "version": "v499.0.0.31.60 (99)",
-  "versionCode": 99,
-  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/99/facebook-revanced-magisk-v499.0.0.31.60-arm64-v8a.zip",
+  "version": "v490.0.0.63.82 (patches: 5.23.0)",
+  "versionCode": 116,
+  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/116/facebook-revanced-magisk-v490.0.0.63.82-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/revanced-magisk-module/update/build.md"
 }

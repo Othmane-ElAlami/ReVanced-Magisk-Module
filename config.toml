@@ -58,6 +58,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/tv.twitch.android.app"
 build-mode = "both"
+apkmirror-dpi = "120-640dpi"
 
 [Twitter]
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter"
@@ -75,6 +76,7 @@ build-mode = "both"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger/"
 arch = "arm64-v8a"
 build-mode = "both"
+excluded-patches = "'Remove Meta AI tab'"
 
 [IconPackStudio]
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/"
@@ -85,20 +87,20 @@ build-mode = "both"
 app-name = "Facebook"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/facebook"
 build-mode = "both"
+arch = "arm64-v8a"
+dpi = "nodpi"
 
 [Instagram]
 app-name = "Instagram"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
 build-mode = "both"
+arch = "arm64-v8a"
+apkmirror-dpi = "120-640dpi"
+excluded-patches = "'Hide ads'"
 
 [Reddit]
 app-name = "Reddit"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit"
-build-mode = "both"
-
-[Duolingo]
-app-name = "Duolingo"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/duolingo/duolingo-duolingo"
 build-mode = "both"
 
 [Lightroom]
@@ -121,6 +123,7 @@ build-mode = "both"
 app-name = "RAR"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar"
 build-mode = "both"
+apkmirror-dpi = "120-640dpi"
 
 [SoundCloud]
 app-name = "SoundCloud"
@@ -131,6 +134,7 @@ build-mode = "both"
 app-name = "Tumblr"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tumblr-inc/tumblr"
 build-mode = "both"
+apkmirror-dpi = "120-640dpi"
 
 [Yuka]
 app-name = "Yuka"

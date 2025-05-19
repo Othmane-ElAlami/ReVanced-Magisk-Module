@@ -107,6 +107,7 @@ build-mode = "both"
 [Lightroom]
 app-name = "Adobe Lightroom"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom"
+uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
 build-mode = "both"
 
 [MemeGenerator]

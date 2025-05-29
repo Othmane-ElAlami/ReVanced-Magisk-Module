@@ -1,6 +1,6 @@
 {
-  "version": "v4.6377 (patches: 5.24.0)",
-  "versionCode": 117,
-  "zipUrl": "https://github.com/Othmane-ElAlami/revanced-magisk-module/releases/download/117/meme-generator-revanced-magisk-v4.6377-arm64-v8a.zip",
-  "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/revanced-magisk-module/update/build.md"
+  "version": "v4.6377 (patches: 5.25.0)",
+  "versionCode": 118,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/118/meme-generator-revanced-magisk-v4.6377-arm64-v8a.zip",
+  "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

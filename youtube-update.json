@@ -1,6 +1,6 @@
 {
-  "version": "v20.12.46 (patches: 5.28.0)",
-  "versionCode": 121,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/121/youtube-revanced-magisk-v20.12.46-all.zip",
+  "version": "v20.13.41 (patches: 5.29.0)",
+  "versionCode": 122,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/122/youtube-revanced-magisk-v20.13.41-all.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

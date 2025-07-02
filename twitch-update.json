@@ -1,6 +1,6 @@
 {
-  "version": "v24.9.0 (patches: 5.28.0)",
-  "versionCode": 121,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/121/twitch-revanced-magisk-v24.9.0-all.zip",
+  "version": "v25.0.1 (patches: 5.30.0)",
+  "versionCode": 123,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/123/twitch-revanced-magisk-v25.0.1-all.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

@@ -1,6 +1,6 @@
 {
-  "version": "v8.05.51 (patches: 5.31.0)",
-  "versionCode": 124,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/124/music-revanced-magisk-v8.05.51-arm64-v8a.zip",
+  "version": "v8.05.51 (patches: 5.31.1)",
+  "versionCode": 125,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/125/music-revanced-magisk-v8.05.51-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

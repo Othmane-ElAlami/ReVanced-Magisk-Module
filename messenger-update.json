@@ -1,6 +1,6 @@
 {
-  "version": "v515.0.0.51.108 (patches: 5.31.2)",
-  "versionCode": 126,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/126/messenger-revanced-magisk-v515.0.0.51.108-arm64-v8a.zip",
+  "version": "v517.0.0.41.109 (patches: 5.32.0)",
+  "versionCode": 127,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/127/messenger-revanced-magisk-v517.0.0.41.109-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

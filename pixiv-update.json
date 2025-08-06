@@ -1,6 +1,6 @@
 {
-  "version": "v6.147.0 (patches: 5.32.0)",
-  "versionCode": 127,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/127/pixiv-revanced-magisk-v6.147.0-all.zip",
+  "version": "v6.149.0 (patches: 5.33.0)",
+  "versionCode": 128,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/128/pixiv-revanced-magisk-v6.149.0-all.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

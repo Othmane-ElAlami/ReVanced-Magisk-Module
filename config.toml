@@ -30,7 +30,7 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/photos/"
 uptodown-dlurl = "https://google-photos.en.uptodown.com/android"
 
 [Spotify]
-enabled = false
+build-mode = "both"
 uptodown-dlurl = "https://spotify.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.spotify.music"
 
@@ -57,13 +57,15 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 [Twitch]
 apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
+version = "auto"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/tv.twitch.android.app"
 build-mode = "both"
-apkmirror-dpi = "120-640dpi"
+apkmirror-dpi = "nodpi"
 
 [Twitter]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter"
-dpi = "120-640dpi"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/x"
+version = "auto"
+apkmirror-dpi = "nodpi"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.twitter.android"
 build-mode = "both"
 
@@ -108,6 +110,7 @@ build-mode = "both"
 app-name = "Adobe Lightroom"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
+version = "auto"
 build-mode = "both"
 
 [MemeGenerator]
@@ -130,13 +133,16 @@ apkmirror-dpi = "120-640dpi"
 [SoundCloud]
 app-name = "SoundCloud"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+version = "auto"
 build-mode = "both"
+apkmirror-dpi = "nodpi"
 
 [Tumblr]
 app-name = "Tumblr"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tumblr-inc/tumblr"
+version = "auto"
 build-mode = "both"
-apkmirror-dpi = "120-640dpi"
+apkmirror-dpi = "nodpi"
 
 [Yuka]
 app-name = "Yuka"

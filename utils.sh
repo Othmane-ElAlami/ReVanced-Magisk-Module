@@ -204,7 +204,13 @@ _req() {
 		mv -f "$dlp" "$op"
 	fi
 }
-req() { _req "$1" "$2" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0"; }
+req() {
+	_req "$1" "$2" \
+		-H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0" \
+		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
+		-H "Accept-Language: en-US,en;q=0.9" \
+		--compressed
+}
 gh_req() { _req "$1" "$2" -H "$GH_HEADER"; }
 gh_dl() {
 	if [ ! -f "$1" ]; then
@@ -251,8 +257,20 @@ get_patch_last_supported_ver() {
 		return 1
 	fi
 	if [ "$op" = "Any" ]; then return; fi
-	pcount=$(head -1 <<<"$op") pcount=${pcount#*(} pcount=${pcount% *}
-	if [ -z "$pcount" ]; then abort "unreachable: '$pcount'"; fi
+	local pcount_line
+	pcount_line=$(head -1 <<<"$op")
+	pcount=${pcount_line#*(}
+	pcount=${pcount% *}
+	if [ -z "$pcount" ]; then
+		pcount=$(grep -o '([0-9][0-9]* patch' <<<"$op" | head -1)
+		pcount=${pcount#*(}
+		pcount=${pcount% patch}
+		pcount=${pcount% patches}
+	fi
+	if [ -z "$pcount" ]; then
+		pr "Skipping patch compatibility lookup for $pkg_name (no patch count detected)"
+		return
+	fi
 	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | get_highest_ver || return 1
 }
 
@@ -372,7 +390,14 @@ get_apkmirror_vers() {
 		echo "$vers"
 	fi
 }
-get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
+get_apkmirror_pkg_name() {
+	local pkg
+	pkg=$(sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__")
+	if [ -z "$pkg" ]; then
+		pkg=$(sed -n 's;.*href="https://play.google.com/store/apps/details?id=\([^"&]*\)"[^>]*class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__" | head -1)
+	fi
+	echo "$pkg"
+}
 get_apkmirror_resp() {
 	__APKMIRROR_RESP__=$(req "${1}" -)
 	__APKMIRROR_CAT__="${1##*/}"

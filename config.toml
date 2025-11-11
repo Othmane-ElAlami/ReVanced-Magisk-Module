@@ -61,12 +61,12 @@ uptodown-dlurl = "https://twitch.en.uptodown.com/android"
 version = "auto"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/tv.twitch.android.app"
 build-mode = "both"
-apkmirror-dpi = "nodpi"
+dpi = "nodpi"
 
 [Twitter]
 apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/x"
 version = "auto"
-apkmirror-dpi = "nodpi"
+dpi = "nodpi"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.twitter.android"
 build-mode = "both"
 
@@ -77,7 +77,9 @@ apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-includin
 build-mode = "both"
 
 [Messenger]
-apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/meta-platforms-inc/messenger"
+uptodown-dlurl = "https://facebook-messenger.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.facebook.orca"
 arch = "arm64-v8a"
 build-mode = "both"
 excluded-patches = "'Remove Meta AI tab'"
@@ -89,18 +91,20 @@ build-mode = "both"
 
 [Facebook]
 app-name = "Facebook"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/facebook"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/meta-platforms-inc/facebook"
+uptodown-dlurl = "https://facebook.en.uptodown.com/android"
 build-mode = "both"
 arch = "arm64-v8a"
 dpi = "nodpi"
 
 [Instagram]
 app-name = "Instagram"
-apkmirror-dlurl = "https://www.apkmirror.com/apk/instagram/instagram-instagram"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/meta-platforms-inc/instagram-instagram"
+uptodown-dlurl = "https://instagram.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.instagram.android"
 build-mode = "both"
 arch = "arm64-v8a"
-apkmirror-dpi = "120-640dpi"
-excluded-patches = "'Hide ads'"
+dpi = "120-640dpi"
 
 [Reddit]
 app-name = "Reddit"
@@ -111,6 +115,7 @@ build-mode = "both"
 app-name = "Adobe Lightroom"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom"
 uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.adobe.lrmobile"
 version = "auto"
 build-mode = "both"
 
@@ -128,22 +133,26 @@ build-mode = "both"
 [RAR]
 app-name = "RAR"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar"
+uptodown-dlurl = "https://rar-for-android.en.uptodown.com/android"
 build-mode = "both"
-apkmirror-dpi = "120-640dpi"
+dpi = "120-640dpi"
 
 [SoundCloud]
 app-name = "SoundCloud"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
 version = "auto"
 build-mode = "both"
-apkmirror-dpi = "nodpi"
+dpi = "nodpi"
 
 [Tumblr]
 app-name = "Tumblr"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/tumblr-inc/tumblr"
+uptodown-dlurl = "https://tumblr.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.tumblr"
 version = "auto"
 build-mode = "both"
-apkmirror-dpi = "nodpi"
+dpi = "160-640dpi"
 
 [Yuka]
 app-name = "Yuka"

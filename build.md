@@ -1,7 +1,12 @@
-GooglePhotos (arm64-v8a): 7.53.0.827222094  
-GooglePhotos (arm-v7a): 7.53.0.827222094  
-Music (arm64-v8a): 8.10.52  
-Music (arm-v7a): 8.10.52  
+GooglePhotos: 7.53.0.827222094  
+IconPackStudio: 2.2 build 016  
+MemeGenerator: 4.6377  
+Music: 8.10.52  
+Pixiv: 6.141.1  
+Reddit: 2024.17.0  
+Spotify: 9.0.76.1115  
+TikTok: 36.5.4  
+Twitch: 16.9.1  
 YouTube: 20.14.43  
 
 Install [Microg](https://github.com/ReVanced/GmsCore/releases) for non-root YouTube and YT Music APKs  

@@ -1,6 +1,6 @@
 {
-  "version": "v2.2 build 016 (patches 5.41.0)",
-  "versionCode": 136,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/136/iconpackstudio-revanced-magisk-v2.2build016-arm64-v8a.zip",
+  "version": "v2.2 build 016 (patches 5.46.0)",
+  "versionCode": 143,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/143/iconpackstudio-revanced-magisk-v2.2build016-arm64-v8a.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

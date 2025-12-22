@@ -17,21 +17,21 @@ archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.y
 
 [Music]
 build-mode = "both"
-arch = "both"
+arch = "arm64-v8a"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube-music"
 uptodown-dlurl = "https://youtube-music.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.apps.youtube.music"
 
 [GooglePhotos]
 build-mode = "both"
-arch = "both"
+arch = "arm64-v8a"
 version = "auto"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/photos/"
 uptodown-dlurl = "https://google-photos.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.google.android.apps.photos"
 
 [Spotify]
-enabled = false
+build-mode = "both"
 uptodown-dlurl = "https://spotify.en.uptodown.com/android"
 archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.spotify.music"
 
@@ -56,28 +56,105 @@ build-mode = "both"
 apkmirror-dlurl = "https://www.apkmirror.com/apk/google-inc/youtube"
 
 [Twitch]
-enabled = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/"
 uptodown-dlurl = "https://twitch.en.uptodown.com/android"
+version = "auto"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/tv.twitch.android.app"
+build-mode = "both"
+dpi = "nodpi"
 
 [Twitter]
-enabled = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/twitter"
-build-mode = "apk"
-dpi = "120-640dpi"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/x-corp/x"
+version = "auto"
+dpi = "nodpi"
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.twitter.android"
+build-mode = "both"
 
 [TikTok]
-enabled = false
 # archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.zhiliaoapp.musically"
 included-patches = "'SIM spoof'"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly"
+build-mode = "both"
 
 [Messenger]
-enabled = false
-apkmirror-dlurl = "https://www.apkmirror.com/apk/facebook-2/messenger/"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/meta-platforms-inc/messenger"
+uptodown-dlurl = "https://facebook-messenger.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.facebook.orca"
 arch = "arm64-v8a"
+build-mode = "both"
+excluded-patches = "'Remove Meta AI tab'"
 
 [IconPackStudio]
-enabled = false
 apkmirror-dlurl = "https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/"
+arch = "arm64-v8a"
+build-mode = "both"
+
+[Facebook]
+app-name = "Facebook"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/meta-platforms-inc/facebook"
+uptodown-dlurl = "https://facebook.en.uptodown.com/android"
+build-mode = "both"
+arch = "arm64-v8a"
+dpi = "nodpi"
+
+[Instagram]
+app-name = "Instagram"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/meta-platforms-inc/instagram-instagram"
+uptodown-dlurl = "https://instagram.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.instagram.android"
+build-mode = "both"
+arch = "arm64-v8a"
+dpi = "120-640dpi"
+
+[Reddit]
+app-name = "Reddit"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/redditinc/reddit"
+build-mode = "both"
+
+[Lightroom]
+app-name = "Adobe Lightroom"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/adobe/lightroom"
+uptodown-dlurl = "https://adobe-lightroom-mobile.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.adobe.lrmobile"
+version = "auto"
+build-mode = "both"
+
+[MemeGenerator]
+app-name = "Meme Generator"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/zombodroid/meme-generator-free"
+arch = "arm64-v8a"
+build-mode = "both"
+
+[Pixiv]
+app-name = "Pixiv"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/pixiv-inc/pixiv"
+build-mode = "both"
+
+[RAR]
+app-name = "RAR"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar"
+uptodown-dlurl = "https://rar-for-android.en.uptodown.com/android"
+build-mode = "both"
+dpi = "120-640dpi"
+
+[SoundCloud]
+app-name = "SoundCloud"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud"
+uptodown-dlurl = "https://soundcloud.en.uptodown.com/android"
+version = "auto"
+build-mode = "both"
+dpi = "nodpi"
+
+[Tumblr]
+app-name = "Tumblr"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tumblr-inc/tumblr"
+uptodown-dlurl = "https://tumblr.en.uptodown.com/android"
+archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.tumblr"
+version = "auto"
+build-mode = "both"
+dpi = "160-640dpi"
+
+[Yuka]
+app-name = "Yuka"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/yuka-apps/yuka-food-cosmetic-scan"
+build-mode = "both"

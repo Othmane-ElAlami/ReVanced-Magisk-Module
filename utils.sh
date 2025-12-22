@@ -188,7 +188,7 @@ _req() {
 	local ip="$1" op="$2"
 	shift 2
 	if [ "$op" = - ]; then
-		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 5 --retry 0 --fail -s -S "$@" "$ip"; then
+		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 20 --retry 0 --fail -s -S "$@" "$ip"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
@@ -200,14 +200,23 @@ _req() {
 			while [ -f "$dlp" ]; do sleep 1; done
 			return
 		fi
-		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 5 --retry 0 --fail -s -S "$@" "$ip" -o "$dlp"; then
+		if ! curl -L -c "$TEMP_DIR/cookie.txt" -b "$TEMP_DIR/cookie.txt" --connect-timeout 20 --retry 0 --fail -s -S "$@" "$ip" -o "$dlp"; then
 			epr "Request failed: $ip"
 			return 1
 		fi
 		mv -f "$dlp" "$op"
 	fi
 }
-req() { _req "$1" "$2" -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0"; }
+req() {
+	_req "$1" "$2" \
+		-H "User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:108.0) Gecko/20100101 Firefox/108.0" \
+		-H "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8" \
+		-H "Accept-Language: en-US,en;q=0.9" \
+		-H "Connection: keep-alive" \
+		-H "Upgrade-Insecure-Requests: 1" \
+		--compressed
+}
+
 gh_req() { _req "$1" "$2" -H "$GH_HEADER"; }
 gh_dl() {
 	if [ ! -f "$1" ]; then
@@ -254,8 +263,20 @@ get_patch_last_supported_ver() {
 		return 1
 	fi
 	if [ "$op" = "Any" ]; then return; fi
-	pcount=$(head -1 <<<"$op") pcount=${pcount#*(} pcount=${pcount% *}
-	if [ -z "$pcount" ]; then abort "unreachable: '$pcount'"; fi
+	local pcount_line
+	pcount_line=$(head -1 <<<"$op")
+	pcount=${pcount_line#*(}
+	pcount=${pcount% *}
+	if [ -z "$pcount" ]; then
+		pcount=$(grep -o '([0-9][0-9]* patch' <<<"$op" | head -1)
+		pcount=${pcount#*(}
+		pcount=${pcount% patch}
+		pcount=${pcount% patches}
+	fi
+	if [ -z "$pcount" ]; then
+		pr "Skipping patch compatibility lookup for $pkg_name (no patch count detected)"
+		return
+	fi
 	grep -F "($pcount patch" <<<"$op" | sed 's/ (.* patch.*//' | get_highest_ver || return 1
 }
 
@@ -319,22 +340,40 @@ dl_apkmirror() {
 		is_bundle=true
 	else
 		if [ "$arch" = "arm-v7a" ]; then arch="armeabi-v7a"; fi
-		local resp node app_table apkmname dlurl=""
-		apkmname=$($HTMLQ "h1.marginZero" --text <<<"$__APKMIRROR_RESP__")
-		apkmname="${apkmname,,}" apkmname="${apkmname// /-}" apkmname="${apkmname//[^a-z0-9-]/}"
-		url="${url}/${apkmname}-${version//./-}-release/"
+		local resp node app_table uurl dlurl=""
+		uurl=$(grep -F "downloadLink" <<<"$__APKMIRROR_RESP__" | grep -F "${version//./-}-release/" | head -1 |
+			sed -n 's;.*href="\(.*-release\).*;\1;p')
+		if [ -z "$uurl" ]; then
+			base_slug="${url##*/}"
+			# use updated slug for Twitter on APKMirror
+			if [[ "${base_slug,,}" == "twitter" ]]; then
+				slug="x-previously-twitter"
+			else
+				slug="$base_slug"
+			fi
+			url="${url}/${slug}-${version//./-}-release/"
+		else
+			url=https://www.apkmirror.com$uurl
+		fi
 		resp=$(req "$url" -) || return 1
 		node=$($HTMLQ "div.table-row.headerFont:nth-last-child(1)" -r "span:nth-child(n+3)" <<<"$resp")
 		if [ "$node" ]; then
+			# Try each requested DPI and prefer APK over BUNDLE when possible.
 			for current_dpi in $dpi; do
-				for type in APK BUNDLE; do
-					if dlurl=$(apk_mirror_search "$resp" "$current_dpi" "${arch}" "$type"); then
-						[[ "$type" == "BUNDLE" ]] && is_bundle=true || is_bundle=false
-						break 2
-					fi
-				done
+				if dlurl=$(apk_mirror_search "$resp" "$current_dpi" "${arch}" "APK"); then
+					is_bundle=false
+					break
+				elif dlurl=$(apk_mirror_search "$resp" "$current_dpi" "${arch}" "BUNDLE"); then
+					is_bundle=true
+					break
+				fi
 			done
-			[ -z "$dlurl" ] && return 1
+			# If nothing found, log available options for user and fail
+			if [ -z "$dlurl" ]; then
+				pr "Available APKs for this version on APKMirror:"
+				$HTMLQ 'div.table-row.headerFont' --text <<<"$resp" | awk 'NR%7==4{arch=$0} NR%7==6{dpi=$0; if(arch!="" && dpi!="") printf "  Arch: %s\n  DPI: %s\n", arch, dpi}'
+				return 1
+			fi
 			resp=$(req "$dlurl" -)
 		fi
 		url=$(echo "$resp" | $HTMLQ --base https://www.apkmirror.com --attribute href "a.btn") || return 1
@@ -364,7 +403,14 @@ get_apkmirror_vers() {
 		echo "$vers"
 	fi
 }
-get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
+get_apkmirror_pkg_name() {
+	local pkg
+	pkg=$(sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__")
+	if [ -z "$pkg" ]; then
+		pkg=$(sed -n 's;.*href="https://play.google.com/store/apps/details?id=\([^"&]*\)"[^>]*class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__" | head -1)
+	fi
+	echo "$pkg"
+}
 get_apkmirror_resp() {
 	__APKMIRROR_RESP__=$(req "${1}" -) || return 1
 	__APKMIRROR_CAT__="${1##*/}"
@@ -457,9 +503,11 @@ check_sig() {
 	local file=$1 pkg_name=$2
 	local sig
 	if grep -q "$pkg_name" sig.txt; then
-		sig=$(java -jar "$APKSIGNER" verify --print-certs "$file" | grep ^Signer | grep SHA-256 | tail -1 | awk '{print $NF}')
+		sig=$(java -jar "$APKSIGNER" verify --print-certs "$file" | grep '^Signer' | grep 'SHA-256' | tail -1 | awk '{print $NF}')
 		echo "$pkg_name signature: ${sig}"
 		grep -qFx "$sig $pkg_name" sig.txt
+	else
+		return 0
 	fi
 }
 

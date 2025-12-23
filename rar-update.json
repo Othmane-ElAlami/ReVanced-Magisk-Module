@@ -1,6 +1,6 @@
 {
-  "version": "v7.11.build127 (patches 5.41.0)",
-  "versionCode": 136,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/136/rar-revanced-magisk-v7.11.build127-all.zip",
+  "version": "v7.20.build129 (patches 5.47.0)",
+  "versionCode": 144,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/144/rar-revanced-magisk-v7.20.build129-all.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

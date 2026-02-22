@@ -414,24 +414,29 @@ get_apkmirror_vers() {
 	fi
 }
 get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
-get_apkmirror_resp() {
-	if ! __APKMIRROR_RESP__=$(req "${1}" -); then
-		epr "APKMirror request failed for ${1} (possible rate limiting/403)"
+	local err_file="${TEMP_DIR}/apkmirror_err_$$.txt"
+	if ! __APKMIRROR_RESP__=$(req "${1}" - 2>"$err_file"); then
+		epr "APKMirror request failed for ${1} (possible rate limiting/403): $(cat "$err_file")"
+		rm -f "$err_file"
 		return 1
 	fi
+	rm -f "$err_file"
 	__APKMIRROR_CAT__="${1##*/}"
 }
 
 # -------------------- uptodown --------------------
-get_uptodown_resp() {
-	if ! __UPTODOWN_RESP__=$(req "${1}/versions" -); then
-		epr "Uptodown request failed for ${1}"
+	local err_file="${TEMP_DIR}/uptodown_err_$$.txt"
+	if ! __UPTODOWN_RESP__=$(req "${1}/versions" - 2>"$err_file"); then
+		epr "Uptodown request failed for ${1}: $(cat "$err_file")"
+		rm -f "$err_file"
 		return 1
 	fi
-	if ! __UPTODOWN_RESP_PKG__=$(req "${1}/download" -); then
-		epr "Uptodown download page request failed for ${1}"
+	if ! __UPTODOWN_RESP_PKG__=$(req "${1}/download" - 2>"$err_file"); then
+		epr "Uptodown download page request failed for ${1}: $(cat "$err_file")"
+		rm -f "$err_file"
 		return 1
 	fi
+	rm -f "$err_file"
 }
 get_uptodown_vers() { $HTMLQ --text ".version" <<<"$__UPTODOWN_RESP__"; }
 dl_uptodown() {
@@ -501,11 +506,13 @@ dl_archive() {
 	req "${url}/${path}" "$output"
 }
 get_archive_resp() {
-	local r
-	if ! r=$(req "$1" -) || [ -z "$r" ]; then
-		epr "Archive request failed for ${1}"
+	local r err_file="${TEMP_DIR}/archive_err_$$.txt"
+	if ! r=$(req "$1" - 2>"$err_file") || [ -z "$r" ]; then
+		epr "Archive request failed for ${1}: $(cat "$err_file")"
+		rm -f "$err_file"
 		return 1
 	fi
+	rm -f "$err_file"
 	__ARCHIVE_RESP__=$(sed -n 's;^<a href="\(.*\)"[^"]*;\1;p' <<<"$r")
 	__ARCHIVE_PKG_NAME__=$(awk -F/ '{print $NF}' <<<"$1")
 }
@@ -583,7 +590,7 @@ build_rv() {
 	done
 	if [ -z "$pkg_name" ]; then
 		epr "empty pkg name, not building ${table}."
-		return 0
+		return 1
 	fi
 	local list_patches
 	list_patches=$(patches_list "$cli_jar" "$patches_jar" "$pkg_name") || return 1
@@ -592,7 +599,7 @@ build_rv() {
 		if ! version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 			"${args[included_patches]}" "${args[excluded_patches]}" "${args[exclusive_patches]}"); then
 			epr "ERROR: Failed to get patch version for ${table}. Skipping..."
-			return 0 # handled gracefully, continue with other builds
+			return 1
 		elif [ -z "$version" ]; then get_latest_ver=true; fi
 	elif isoneof "$version_mode" latest beta; then
 		get_latest_ver=true
@@ -608,7 +615,7 @@ build_rv() {
 	fi
 	if [ -z "$version" ]; then
 		epr "empty version, not building ${table}."
-		return 0
+		return 1
 	fi
 
 	if [ "$mode_arg" = module ]; then
@@ -639,11 +646,11 @@ build_rv() {
 			fi
 			break
 		done
-		if [ ! -f "$stock_apk" ]; then return 0; fi
+		if [ ! -f "$stock_apk" ]; then return 1; fi
 	fi
 	if [ ! -f "${stock_apk}.apkm" ] && ! OP=$(check_sig "$stock_apk" "$pkg_name" 2>&1) && ! grep -qFx "ERROR: Missing META-INF/MANIFEST.MF" <<<"$OP"; then
 		epr "$pkg_name not building, apk signature mismatch '$stock_apk': $OP"
-		return 0
+		return 1
 	fi
 	log "${table}: ${version}"
 
@@ -694,7 +701,7 @@ build_rv() {
 		if [ "${NORB:-}" != true ] || [ ! -f "$patched_apk" ]; then
 			if ! patch_apk "$stock_apk_to_patch" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}"; then
 				epr "Building '${table}' failed!"
-				return 0
+				return 1
 			fi
 		fi
 		rm "$stock_apk_to_patch"
@@ -729,8 +736,10 @@ build_rv() {
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
 	done
-	)
-	return 0  # Always return success to continue with other builds
+	) || {
+		epr "Build process for an app exited with error, continuing with next app..."
+		return 1
+	}
 }
 
 list_args() { tr -d '\t\r' <<<"$1" | tr -s ' ' | sed 's/" "/"\n"/g' | sed 's/\([^"]\)"\([^"]\)/\1'\''\2/g' | grep -v '^$' || :; }

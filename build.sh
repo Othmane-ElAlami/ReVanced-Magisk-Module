@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -uo pipefail
+set -euo pipefail
 shopt -s nullglob
 
 source utils.sh
@@ -155,7 +155,14 @@ for table_name in $(toml_get_table_names); do
 		build_rv "$(declare -p app_args)" &
 	fi
 done
-wait || true
+# Wait for all background build jobs individually so their exit codes are observed.
+# Failures are logged but do not stop the script; the "All builds failed" check below
+# still enforces that at least one build must succeed.
+for pid in $(jobs -p); do
+	if ! wait "$pid"; then
+		log "Background build job with PID $pid failed."
+	fi
+done
 _clean_tmp
 if [ -z "$(ls -A1 "${BUILD_DIR}" 2>/dev/null)" ]; then abort "All builds failed."; fi
 

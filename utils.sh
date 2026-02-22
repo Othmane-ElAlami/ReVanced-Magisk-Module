@@ -415,7 +415,7 @@ get_apkmirror_vers() {
 }
 get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
 get_apkmirror_resp() {
-	if ! __APKMIRROR_RESP__=$(req "${1}" - 2>/dev/null); then
+	if ! __APKMIRROR_RESP__=$(req "${1}" -); then
 		epr "APKMirror request failed for ${1} (possible rate limiting/403)"
 		return 1
 	fi
@@ -424,11 +424,11 @@ get_apkmirror_resp() {
 
 # -------------------- uptodown --------------------
 get_uptodown_resp() {
-	if ! __UPTODOWN_RESP__=$(req "${1}/versions" - 2>/dev/null); then
+	if ! __UPTODOWN_RESP__=$(req "${1}/versions" -); then
 		epr "Uptodown request failed for ${1}"
 		return 1
 	fi
-	if ! __UPTODOWN_RESP_PKG__=$(req "${1}/download" - 2>/dev/null); then
+	if ! __UPTODOWN_RESP_PKG__=$(req "${1}/download" -); then
 		epr "Uptodown download page request failed for ${1}"
 		return 1
 	fi
@@ -502,7 +502,7 @@ dl_archive() {
 }
 get_archive_resp() {
 	local r
-	if ! r=$(req "$1" - 2>/dev/null) || [ -z "$r" ]; then
+	if ! r=$(req "$1" -) || [ -z "$r" ]; then
 		epr "Archive request failed for ${1}"
 		return 1
 	fi
@@ -592,7 +592,7 @@ build_rv() {
 		if ! version=$(get_patch_last_supported_ver "$list_patches" "$pkg_name" \
 			"${args[included_patches]}" "${args[excluded_patches]}" "${args[exclusive_patches]}"); then
 			epr "ERROR: Failed to get patch version for ${table}. Skipping..."
-			return 0
+			return 0 # handled gracefully, continue with other builds
 		elif [ -z "$version" ]; then get_latest_ver=true; fi
 	elif isoneof "$version_mode" latest beta; then
 		get_latest_ver=true
@@ -729,7 +729,7 @@ build_rv() {
 		popd >/dev/null || :
 		pr "Built ${table} (root): '${BUILD_DIR}/${module_output}'"
 	done
-	) || epr "Build process for an app exited with error, continuing with next app..."
+	)
 	return 0  # Always return success to continue with other builds
 }
 

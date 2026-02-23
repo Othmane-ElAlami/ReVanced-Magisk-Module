@@ -388,6 +388,7 @@ get_apkmirror_vers() {
 	fi
 }
 get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<<"$__APKMIRROR_RESP__"; }
+get_apkmirror_resp() {
 	local err_file="${TEMP_DIR}/apkmirror_err_$$.txt"
 	if ! __APKMIRROR_RESP__=$(req "${1}" - 2>"$err_file"); then
 		epr "APKMirror request failed for ${1} (possible rate limiting/403): $(cat "$err_file")"
@@ -399,6 +400,7 @@ get_apkmirror_pkg_name() { sed -n 's;.*id=\(.*\)" class="accent_color.*;\1;p' <<
 }
 
 # -------------------- uptodown --------------------
+get_uptodown_resp() {
 	local err_file="${TEMP_DIR}/uptodown_err_$$.txt"
 	if ! __UPTODOWN_RESP__=$(req "${1}/versions" - 2>"$err_file"); then
 		epr "Uptodown request failed for ${1}: $(cat "$err_file")"

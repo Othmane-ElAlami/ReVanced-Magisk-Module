@@ -59,18 +59,50 @@ jobs:
           cat build.md >> "$GITHUB_OUTPUT"
           echo "${DELIM}" >> "$GITHUB_OUTPUT"
           cp -f build.md build.tmp
+
+          ACTIVE_BODY=$(sed '/^Skipped:/,$d' build.md)
+          PATCHES_LINE=""
+          for p in "MorpheApp/" "inotia00/" "ReVanced/"; do
+            PATCHES_LINE=$(echo "$ACTIVE_BODY" | grep "^Patches: .*$p" | head -n1)
+            if [ -n "$PATCHES_LINE" ]; then break; fi
+          done
+          if [ -z "$PATCHES_LINE" ]; then
+            PATCHES_LINE=$(echo "$ACTIVE_BODY" | grep "^Patches: " | head -n1)
+          fi
+          if [ -z "$PATCHES_LINE" ]; then
+            PATCHES_LINE=$(grep "^Patches: " build.md | head -n1)
+          fi
+
+          if [ -z "$PATCHES_LINE" ]; then
+            TITLE="Morphe Release ($(date -u +%Y-%m-%d))"
+          else
+            if echo "$PATCHES_LINE" | grep -iqE "MorpheApp/|morphe"; then
+              PNAME="Morphe"
+            elif echo "$PATCHES_LINE" | grep -iqE "crimera/|piko|pico"; then
+              PNAME="Pico"
+            elif echo "$PATCHES_LINE" | grep -iqE "inotia00/|extended"; then
+              PNAME="Extended"
+            else
+              PNAME="ReVanced"
+            fi
+            VER=$(echo "$PATCHES_LINE" | sed -E 's/.*-([0-9]+(\.[0-9]+)+).*/\1/')
+            DATE_STR=$(date -u +%Y-%m-%d)
+            TITLE="$PNAME $VER ($DATE_STR)"
+          fi
+          echo "RELEASE_TITLE=$TITLE" >> "$GITHUB_OUTPUT"
       
       - name: Upload release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+          TITLE: ${{ steps.get_output.outputs.RELEASE_TITLE }}
           BODY: ${{ steps.get_output.outputs.BUILD_LOG }}
         run: |
           if gh release view "$TAG" >/dev/null 2>&1; then
-            gh release edit "$TAG" --title "Release" --notes "$BODY"
+            gh release edit "$TAG" --title "$TITLE" --notes "$BODY"
             gh release upload "$TAG" ./build/* --clobber
           else
-            gh release create "$TAG" ./build/* --title "Release" --notes "$BODY"
+            gh release create "$TAG" ./build/* --title "$TITLE" --notes "$BODY"
           fi
 
       - name: Update modules changelog and update json

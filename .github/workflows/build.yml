@@ -54,42 +54,8 @@ jobs:
       - name: Get output
         id: get_output
         run: |
-          DELIM="$(openssl rand -hex 8)"
-          echo "BUILD_LOG<<${DELIM}" >> "$GITHUB_OUTPUT"
-          cat build.md >> "$GITHUB_OUTPUT"
-          echo "${DELIM}" >> "$GITHUB_OUTPUT"
           cp -f build.md build.tmp
-
-          ACTIVE_BODY=$(sed '/^Skipped:/,$d' build.md)
-          PATCHES_LINE=""
-          for p in "MorpheApp/" "inotia00/" "ReVanced/"; do
-            PATCHES_LINE=$(echo "$ACTIVE_BODY" | grep "^Patches: .*$p" | head -n1)
-            if [ -n "$PATCHES_LINE" ]; then break; fi
-          done
-          if [ -z "$PATCHES_LINE" ]; then
-            PATCHES_LINE=$(echo "$ACTIVE_BODY" | grep "^Patches: " | head -n1)
-          fi
-          if [ -z "$PATCHES_LINE" ]; then
-            PATCHES_LINE=$(grep "^Patches: " build.md | head -n1)
-          fi
-
-          if [ -z "$PATCHES_LINE" ]; then
-            TITLE="Morphe Release ($(date -u +%Y-%m-%d))"
-          else
-            if echo "$PATCHES_LINE" | grep -iqE "MorpheApp/|morphe"; then
-              PNAME="Morphe"
-            elif echo "$PATCHES_LINE" | grep -iqE "crimera/|piko|pico"; then
-              PNAME="Pico"
-            elif echo "$PATCHES_LINE" | grep -iqE "inotia00/|extended"; then
-              PNAME="Extended"
-            else
-              PNAME="ReVanced"
-            fi
-            VER=$(echo "$PATCHES_LINE" | sed -E 's/.*-([0-9]+(\.[0-9]+)+).*/\1/')
-            DATE_STR=$(date -u +%Y-%m-%d)
-            TITLE="$PNAME $VER ($DATE_STR)"
-          fi
-          echo "RELEASE_TITLE=$TITLE" >> "$GITHUB_OUTPUT"
+          python3 .github/scripts/generate_release_notes.py
       
       - name: Upload release
         env:

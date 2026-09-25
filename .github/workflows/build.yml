@@ -119,7 +119,6 @@ jobs:
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT: ${{ vars.TG_CHAT || secrets.TG_CHAT }}
-        if: ${{ env.TG_TOKEN != '' && (vars.TG_CHAT != '' || secrets.TG_CHAT != '') }}
         run: |
           cd build || { echo "build folder not found"; exit 1; }
 

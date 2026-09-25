@@ -88,5 +88,12 @@ class TestGenerateReleaseNotes(unittest.TestCase):
         self.assertIn("## Skipped / Failed", body)
         self.assertIn("- Twitch (disabled)", body)
 
+    def test_devanced_and_patch_set_formatting(self):
+        self.write_build_md("Patches: RookieEnough/De-Vanced/patches-v1.0.0.mpp")
+        self.create_artifacts([])
+        title, body = generate_release_notes(build_dir=self.test_dir, build_md_path=self.mock_build_md)
+        self.assertIn("DeVanced 1.0.0", title)
+        self.assertIn("- **RookieEnough/De-Vanced**: `patches-v1.0.0.mpp`", body)
+
 if __name__ == "__main__":
     unittest.main()

@@ -5,7 +5,7 @@
 Extensive ReVanced & Morphe builder.
 
 > **Note:** This is a fork of [j-hc/revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module).
-> This fork is customized for advanced batch building with more resilient error handling and dynamic release title generation. By default, its configuration builds apps from the **ReVanced** and **Morphe** patch ecosystems, with additional ecosystems (like **Piko**) preconfigured for easy enablement.
+> This fork is customized for advanced batch building with more resilient error handling and dynamic release title generation. By default, its configuration builds apps from the **Morphe**, **Piko**, and **DeVanced** patch ecosystems, with additional ecosystems (such as official **ReVanced**) preconfigured for easy enablement.
 
 Get the [latest CI release](https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases).
 
@@ -20,7 +20,7 @@ Use [**zygisk-detach**](https://github.com/j-hc/zygisk-detach) to detach YouTube
     </ul>
  <li> <b>Core builder features:</b></li>
     <ul>
-     <li> Supports building from multiple patch ecosystems simultaneously (Morphe, ReVanced, Extended, Piko, etc.).</li>
+     <li> Supports building from multiple patch ecosystems simultaneously (Morphe, Piko, DeVanced, ReVanced, Extended, etc.).</li>
      <li> Can build Magisk modules and non-root APKs.</li>
      <li> Optimizes APKs and modules for size.</li>
      <li> Modules:</li>

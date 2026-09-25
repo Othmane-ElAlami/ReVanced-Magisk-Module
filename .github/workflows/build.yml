@@ -64,6 +64,7 @@ jobs:
           TITLE: ${{ steps.get_output.outputs.RELEASE_TITLE }}
           BODY: ${{ steps.get_output.outputs.BUILD_LOG }}
         run: |
+          ls -lh ./build/*
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release edit "$TAG" --title "$TITLE" --notes "$BODY"
             gh release upload "$TAG" ./build/* --clobber
@@ -121,34 +122,120 @@ jobs:
         run: |
           cd build || { echo "build folder not found"; exit 1; }
 
+          escape_html() {
+            sed -e 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g' <<<"$1"
+          }
+
           TG_CHAT="@rvc_magisk"
           NL=$'\n'
-          APKS=""
-          MODULES=""
+          MAX_LEN=3500
+
+          send_tg() {
+            local text="$1"
+            [ -z "$text" ] && return 0
+            curl -sS --fail-with-body -X POST \
+              --data-urlencode "parse_mode=HTML" \
+              --data-urlencode "disable_web_page_preview=true" \
+              --data-urlencode "chat_id=${TG_CHAT}" \
+              --data-urlencode "text=${text}" \
+              "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
+          }
+
+          MODULE_LINKS=()
+          APK_LINKS=()
           for OUTPUT in *; do
+            [ -f "$OUTPUT" ] || continue
             DL_URL="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/download/${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}/${OUTPUT}"
+            ESCAPED_URL="$(escape_html "$DL_URL")"
+            ESCAPED_NAME="$(escape_html "$OUTPUT")"
+            LINK="📦<a href=\"${ESCAPED_URL}\">${ESCAPED_NAME}</a>"
             if [[ $OUTPUT = *.apk ]]; then
-              APKS+="${NL}📦[${OUTPUT}](${DL_URL})"
+              APK_LINKS+=("$LINK")
             elif [[ $OUTPUT = *.zip ]]; then
-              MODULES+="${NL}📦[${OUTPUT}](${DL_URL})"
+              MODULE_LINKS+=("$LINK")
             fi
           done
-          MODULES=${MODULES#"$NL"}
-          APKS=${APKS#"$NL"}
 
-          BODY="$(sed 's/^\* \*\*/↪ \*\*/g; s/^\* `/↪ \*\*/g; s/`/\*/g; s/^\* /\↪/g; s/\*\*/\*/g; s/###//g; s/^- /↪ /g; /^==/d;' ../build.md)"
-          MSG="*New build!*
+          CURRENT_MSG="<b>New build!</b>"
+          BODY="$(sed -e 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' ../build.md)"
 
-          ${BODY}
+          first_body_line=true
+          while IFS= read -r line || [ -n "$line" ]; do
+            if [ "$first_body_line" = true ]; then
+              cand="${CURRENT_MSG}${NL}${NL}${line}"
+              first_body_line=false
+            else
+              cand="${CURRENT_MSG}${NL}${line}"
+            fi
+            if [ ${#cand} -le $MAX_LEN ]; then
+              CURRENT_MSG="$cand"
+            else
+              send_tg "$CURRENT_MSG"
+              CURRENT_MSG="<b>New build (continued):</b>${NL}${NL}${line}"
+            fi
+          done <<< "$BODY"
 
-          *▼ Download Links:*
-          Modules:
-          ${MODULES}
+          HAS_MODULES=false
+          HAS_APKS=false
+          [ ${#MODULE_LINKS[@]} -gt 0 ] && HAS_MODULES=true
+          [ ${#APK_LINKS[@]} -gt 0 ] && HAS_APKS=true
 
-          APKs:
-          ${APKS}
-          "
-          echo "'$MSG'"
-          MSG=${MSG:0:9450}
-          POST="https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
-          curl -X POST --data-urlencode "parse_mode=Markdown" --data-urlencode "disable_web_page_preview=true" --data-urlencode "text=${MSG}" --data-urlencode "chat_id=${TG_CHAT}" "$POST"
+          if [ "$HAS_MODULES" = true ] || [ "$HAS_APKS" = true ]; then
+            if [ -n "$CURRENT_MSG" ] && [ $(( ${#CURRENT_MSG} + 250 )) -gt $MAX_LEN ]; then
+              send_tg "$CURRENT_MSG"
+              CURRENT_MSG=""
+            fi
+
+            if [ -z "$CURRENT_MSG" ]; then
+              CURRENT_MSG="<b>▼ Download Links:</b>"
+            else
+              CURRENT_MSG+="${NL}${NL}<b>▼ Download Links:</b>"
+            fi
+
+            CONT_LINKS="<b>▼ Download Links (continued):</b>"
+
+            if [ "$HAS_MODULES" = true ]; then
+              first_mod=true
+              for link in "${MODULE_LINKS[@]}"; do
+                if [ "$first_mod" = true ]; then
+                  item="Modules:${NL}${link}"
+                  first_mod=false
+                else
+                  item="$link"
+                fi
+                if [ $(( ${#CURRENT_MSG} + 1 + ${#item} )) -le $MAX_LEN ]; then
+                  CURRENT_MSG+="${NL}${item}"
+                else
+                  send_tg "$CURRENT_MSG"
+                  CURRENT_MSG="${CONT_LINKS}${NL}${NL}${item}"
+                fi
+              done
+            fi
+
+            if [ "$HAS_APKS" = true ]; then
+              first_apk=true
+              for link in "${APK_LINKS[@]}"; do
+                if [ "$first_apk" = true ]; then
+                  if [ "$HAS_MODULES" = true ]; then
+                    item="${NL}APKs:${NL}${link}"
+                  else
+                    item="APKs:${NL}${link}"
+                  fi
+                  first_apk=false
+                else
+                  item="$link"
+                fi
+                if [ $(( ${#CURRENT_MSG} + 1 + ${#item} )) -le $MAX_LEN ]; then
+                  CURRENT_MSG+="${NL}${item}"
+                else
+                  send_tg "$CURRENT_MSG"
+                  item="${item#"${NL}"}"
+                  CURRENT_MSG="${CONT_LINKS}${NL}${NL}${item}"
+                fi
+              done
+            fi
+          fi
+
+          if [ -n "$CURRENT_MSG" ]; then
+            send_tg "$CURRENT_MSG"
+          fi

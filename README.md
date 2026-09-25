@@ -5,11 +5,13 @@
 Extensive ReVanced & Morphe builder.
 
 > **Note:** This is a fork of [j-hc/revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module).
-> This fork is customized for advanced batch building with more resilient error handling and dynamic release title generation. By default, its configuration builds apps from the **Morphe**, **Piko**, and **DeVanced** patch ecosystems, with additional ecosystems (such as official **ReVanced**) preconfigured for easy enablement.
+> This fork is customized for advanced batch building with more resilient error handling and dynamic release title generation. By default, its configuration builds apps from the **Morphe**, **Piko**, **DeVanced**, and **Wagg13** patch ecosystems, with additional ecosystems (such as official **ReVanced**) preconfigured for easy enablement.
 
 Get the [latest CI release](https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases).
 
 Use [**zygisk-detach**](https://github.com/j-hc/zygisk-detach) to detach YouTube and YT Music from the Play Store if you are using Magisk modules.
+
+> **Tinder (Wagg13):** Patched for **Unlimited Rewind only**.
 
 <details><summary><big>Features</big></summary>
 <ul>

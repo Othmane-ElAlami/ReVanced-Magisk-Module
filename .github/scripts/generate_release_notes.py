@@ -32,7 +32,8 @@ def generate_release_notes(build_dir="build", build_md_path="build.md", date_str
     ecosystems = {}
     for p in patch_lines:
         brand = None
-        if re.search(r"morphe", p, re.IGNORECASE): brand = "Morphe"
+        if re.search(r"wagg(?:13)?", p, re.IGNORECASE): brand = "Wagg13"
+        elif re.search(r"morphe", p, re.IGNORECASE): brand = "Morphe"
         elif re.search(r"crimera|piko", p, re.IGNORECASE): brand = "Piko"
         elif re.search(r"extended", p, re.IGNORECASE): brand = "Extended"
         elif re.search(r"de-?vanced", p, re.IGNORECASE): brand = "DeVanced"
@@ -49,7 +50,7 @@ def generate_release_notes(build_dir="build", build_md_path="build.md", date_str
                 
     brands = list(ecosystems.keys())
     # Deterministic sorting
-    priority = ["Morphe", "ReVanced", "Piko", "Extended", "DeVanced"]
+    priority = ["Morphe", "ReVanced", "Piko", "Extended", "DeVanced", "Wagg13"]
     brands.sort(key=lambda x: priority.index(x) if x in priority else len(priority) + brands.index(x))
     
     if not brands:

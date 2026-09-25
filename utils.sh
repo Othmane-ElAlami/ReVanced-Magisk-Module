@@ -3,6 +3,7 @@
 MODULE_TEMPLATE_DIR="module"
 CWD=$(pwd)
 TEMP_DIR="temp"
+BUILD_DIR="build"
 BIN_DIR="bin"
 DL_SRCS=("direct" "archive" "apkmirror")
 
@@ -148,17 +149,19 @@ get_prebuilts() {
 			if [ "$grab_cl" = "true" ]; then echo -e "[Changelog](https://github.com/${src}/releases/tag/${tag_name})\n" >>"${cl_dir}/changelog.md"; fi
 			if [ "$REMOVE_RV_INTEGRATIONS_CHECKS" = "true" ]; then
 				local extensions_ext
-				extensions_ext=$(unzip -l "${file}" "extensions/shared.*" | grep -o "shared\..*") extensions_ext="${extensions_ext#*.}"
-				(
-					mkdir -p "${file}-zip" || return 1
-					unzip -qo "${file}" -d "${file}-zip" || return 1
-					java -cp "${BIN_DIR}/paccer.jar:${BIN_DIR}/dexlib2.jar" com.jhc.Main "${file}-zip/extensions/shared.${extensions_ext}" "${file}-zip/extensions/shared-patched.${extensions_ext}" || return 1
-					mv -f "${file}-zip/extensions/shared-patched.${extensions_ext}" "${file}-zip/extensions/shared.${extensions_ext}" || return 1
-					rm "${file}" || return 1
-					cd "${file}-zip" || abort
-					zip -0rq "${CWD}/${file}" . || return 1
-				) >&2
-				rm -r "${file}-zip" || :
+				extensions_ext=$(unzip -l "${file}" "extensions/shared.*" 2>/dev/null | grep -o "shared\..*") extensions_ext="${extensions_ext#*.}"
+				if [ -n "$extensions_ext" ]; then
+					(
+						mkdir -p "${file}-zip" || return 1
+						unzip -qo "${file}" -d "${file}-zip" || return 1
+						java -cp "${BIN_DIR}/paccer.jar:${BIN_DIR}/dexlib2.jar" com.jhc.Main "${file}-zip/extensions/shared.${extensions_ext}" "${file}-zip/extensions/shared-patched.${extensions_ext}" || return 1
+						mv -f "${file}-zip/extensions/shared-patched.${extensions_ext}" "${file}-zip/extensions/shared.${extensions_ext}" || return 1
+						rm "${file}" || return 1
+						cd "${file}-zip" || abort
+						zip -0rq "${CWD}/${file}" . || return 1
+					) >&2
+					rm -r "${file}-zip" || :
+				fi
 			fi
 		fi
 		echo -n "$file "
@@ -338,8 +341,12 @@ patches_list() {
 		local cmd="java -jar '$cli_jar' list-patches --patches '$patches_jar' -f '$pkg_name' --with-versions --with-packages"
 		if [ "$is_experimental" = "true" ]; then cmd+=" -x"; fi
 		if ! op=$(eval "$cmd" 2>&1); then
-			epr "Could not get patches list ($pkg_name) $cli_jar: '$op'"
-			return 1
+			cmd="java -jar '$cli_jar' list-patches '$patches_jar' -f '$pkg_name' --with-versions --with-packages"
+			if [ "$is_experimental" = "true" ]; then cmd+=" -x"; fi
+			if ! op=$(eval "$cmd" 2>&1); then
+				epr "Could not get patches list ($pkg_name) $cli_jar: '$op'"
+				return 1
+			fi
 		fi
 
 	fi
@@ -703,7 +710,7 @@ build_rv() {
 	for build_mode in "${build_mode_arr[@]}"; do
 		patcher_args=("${p_patcher_args[@]}")
 		pr "Building '${table}' in '$build_mode' mode"
-		if [ -n "$microg_patch" ]; then
+		if [ -n "$microg_patch" ] || [ "$mode_arg" = both ]; then
 			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}-${build_mode}.apk"
 		else
 			patched_apk="${TEMP_DIR}/${app_name_l}-${rv_brand_f}-${version_f}-${arch_f}.apk"
@@ -763,8 +770,14 @@ build_rv() {
 			fi
 		fi
 
-		local apk_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-v${version_f}-${arch_f}.apk"
-		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
+		local module_output="${app_name_l}-${rv_brand_f}-module-v${version_f}-${arch_f}.zip"
+		local mode_output
+		if [ "$build_mode" = apk ]; then
+			mode_output="${BUILD_DIR}/${app_name_l}-${rv_brand_f}-v${version_f}-${arch_f}.apk"
+		else
+			mode_output="${BUILD_DIR}/${module_output}"
+		fi
+		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$mode_output" ]; }; then
 			if ! patch_apk "$stock_apk_to_patch" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}"; then
 				epr "Building '${table}' failed!"
 				return 1
@@ -772,12 +785,12 @@ build_rv() {
 		fi
 		rm "$stock_apk_to_patch"
 		if [ "$build_mode" = apk ]; then
-			if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$apk_output" ]; }; then
-				mv -f "$patched_apk" "$apk_output"
+			if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$mode_output" ]; }; then
+				mv -f "$patched_apk" "$mode_output"
 			else
-				cp -f "$patched_apk" "$apk_output"
+				cp -f "$patched_apk" "$mode_output"
 			fi
-			pr "Built ${table} (non-root): '${apk_output}'"
+			pr "Built ${table} (non-root): '${mode_output}'"
 			continue
 		fi
 		local base_template
@@ -796,7 +809,10 @@ build_rv() {
 			"https://raw.githubusercontent.com/${GITHUB_REPOSITORY-}/update/${upj}" \
 			"$base_template"
 
-		local module_output="${app_name_l}-${rv_brand_f}-module-v${version_f}-${arch_f}.zip"
+		if [ "${NORB:-}" = true ] && [ -f "$mode_output" ]; then
+			pr "Built ${table} (root): '${mode_output}'"
+			continue
+		fi
 		pr "Packing module ${table}"
 		cp -f "$patched_apk" "${base_template}/base.apk"
 

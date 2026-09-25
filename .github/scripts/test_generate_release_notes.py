@@ -95,5 +95,12 @@ class TestGenerateReleaseNotes(unittest.TestCase):
         self.assertIn("DeVanced 1.0.0", title)
         self.assertIn("- **RookieEnough/De-Vanced**: `patches-v1.0.0.mpp`", body)
 
+    def test_wagg13_and_patch_set_formatting(self):
+        self.write_build_md("Patches: WaggBR/Wagg13Patch_Morphe/patches-1.0.0.mpp")
+        self.create_artifacts([])
+        title, body = generate_release_notes(build_dir=self.test_dir, build_md_path=self.mock_build_md)
+        self.assertIn("Wagg13 1.0.0", title)
+        self.assertIn("- **WaggBR/Wagg13Patch_Morphe**: `patches-1.0.0.mpp`", body)
+
 if __name__ == "__main__":
     unittest.main()

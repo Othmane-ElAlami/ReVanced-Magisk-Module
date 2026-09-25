@@ -51,6 +51,21 @@ archive-dlurl = "https://archive.org/download/jhc-apks/apks/com.twitter.android"
 version = "latest"
 included-patches = "'NewX: Restore Twitter branding'"
 
+# Wagg13 Tinder patch unlocks Unlimited Rewind only.
+[Tinder-Wagg13]
+app-name = "Tinder"
+pkg-name = "com.tinder"
+patches-source = "WaggBR/Wagg13Patch_Morphe"
+cli-source = "MorpheApp/morphe-cli"
+rv-brand = "Wagg13"
+version = "17.34.1"
+build-mode = "both"
+arch = "arm64-v8a"
+dpi = "480-640dpi"
+direct-dlurl = "https://d.apkpure.com/b/APK/com.tinder?versionCode=17340184&bundle=com.tinder-17.34.1-arm64-v8a.apk"
+apkmirror-dlurl = "https://www.apkmirror.com/apk/tinder/tinder-tinder/"
+
+
 [Music]
 enabled = false
 build-mode = "both"

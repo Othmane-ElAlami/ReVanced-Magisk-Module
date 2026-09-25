@@ -640,6 +640,7 @@ build_rv() {
 	fi
 	if [ -z "$version" ]; then
 		epr "empty version, not building ${table}."
+		echo "- ${table}: could not determine version" >>"$TEMP_DIR/failed"
 		return 1
 	fi
 
@@ -671,7 +672,10 @@ build_rv() {
 			fi
 			break
 		done
-		if [ ! -f "$stock_apk" ]; then return 1; fi
+		if [ ! -f "$stock_apk" ]; then
+			echo "- ${table} ${version}: stock APK download failed" >>"$TEMP_DIR/failed"
+			return 1
+		fi
 	fi
 
 	local sig_op
@@ -681,11 +685,13 @@ build_rv() {
 		local a="${stock_apk}-zip/base.apk"
 		if ! sig_op=$(check_sig "$a" "$pkg_name" 2>&1) && ! grep -qFx "ERROR: Missing META-INF/MANIFEST.MF" <<<"$sig_op"; then
 			epr "$pkg_name not building, apk signature mismatch '$a': $sig_op"
+			echo "- ${table} ${version}: apk signature mismatch" >>"$TEMP_DIR/failed"
 			return 1
 		fi
 		rm -rf "${stock_apk}-zip" || :
 	elif ! sig_op=$(check_sig "$stock_apk" "$pkg_name" 2>&1) && ! grep -qFx "ERROR: Missing META-INF/MANIFEST.MF" <<<"$sig_op"; then
 		epr "$pkg_name not building, apk signature mismatch '$stock_apk': $sig_op"
+		echo "- ${table} ${version}: apk signature mismatch" >>"$TEMP_DIR/failed"
 		return 1
 	fi
 	log "${table}: ${version}"
@@ -780,6 +786,7 @@ build_rv() {
 		if [ "${NORB:-}" != true ] || { [ ! -f "$patched_apk" ] && [ ! -f "$mode_output" ]; }; then
 			if ! patch_apk "$stock_apk_to_patch" "$patched_apk" "${patcher_args[*]}" "${args[cli]}" "${args[ptjar]}"; then
 				epr "Building '${table}' failed!"
+				echo "- ${table} ${version}: patching failed ($build_mode mode)" >>"$TEMP_DIR/failed"
 				return 1
 			fi
 		fi

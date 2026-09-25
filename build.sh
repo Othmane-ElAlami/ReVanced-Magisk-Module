@@ -42,6 +42,8 @@ if [ "${2-}" = "--config-update" ]; then
 fi
 
 : >build.md
+: >"$TEMP_DIR"/failed
+: >"$TEMP_DIR"/skipped
 ENABLE_MODULE_UPDATE=$(toml_get "$main_config_t" enable-module-update) || ENABLE_MODULE_UPDATE=true
 if [ "$ENABLE_MODULE_UPDATE" = true ] && [ -z "${GITHUB_REPOSITORY-}" ]; then
 	pr "You are building locally. Module updates will not be enabled."
@@ -173,9 +175,15 @@ log "\n[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)\
 log "$(cat "$TEMP_DIR"/*/changelog.md)"
 
 SKIPPED=$(cat "$TEMP_DIR"/skipped 2>/dev/null || :)
-if [ -n "$SKIPPED" ]; then
+FAILED=$(cat "$TEMP_DIR"/failed 2>/dev/null || :)
+if [ -n "$SKIPPED" ] || [ -n "$FAILED" ]; then
 	log "\nSkipped:"
-	log "$SKIPPED"
+	if [ -n "$FAILED" ]; then
+		log "$FAILED"
+	fi
+	if [ -n "$SKIPPED" ]; then
+		log "$SKIPPED"
+	fi
 fi
 
 pr "Done"

@@ -118,27 +118,35 @@ jobs:
       - name: Report to Telegram
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
-        if: env.TG_TOKEN != null
+          TG_CHAT: ${{ vars.TG_CHAT || secrets.TG_CHAT }}
+        if: ${{ env.TG_TOKEN != '' && (vars.TG_CHAT != '' || secrets.TG_CHAT != '') }}
         run: |
           cd build || { echo "build folder not found"; exit 1; }
+
+          if [ -z "$TG_TOKEN" ] || [ -z "$TG_CHAT" ]; then
+            echo "Telegram notification skipped: TG_TOKEN or TG_CHAT not configured."
+            exit 0
+          fi
 
           escape_html() {
             sed -e 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g' <<<"$1"
           }
 
-          TG_CHAT="@rvc_magisk"
           NL=$'\n'
           MAX_LEN=3500
 
           send_tg() {
             local text="$1"
             [ -z "$text" ] && return 0
-            curl -sS --fail-with-body -X POST \
+            if ! curl -sS --fail-with-body -X POST \
               --data-urlencode "parse_mode=HTML" \
               --data-urlencode "disable_web_page_preview=true" \
               --data-urlencode "chat_id=${TG_CHAT}" \
               --data-urlencode "text=${text}" \
-              "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"
+              "https://api.telegram.org/bot${TG_TOKEN}/sendMessage"; then
+              echo "::warning::Telegram notification failed"
+              return 0
+            fi
           }
 
           MODULE_LINKS=()

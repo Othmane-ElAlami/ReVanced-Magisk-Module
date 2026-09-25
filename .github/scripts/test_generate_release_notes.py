@@ -102,5 +102,12 @@ class TestGenerateReleaseNotes(unittest.TestCase):
         self.assertIn("Wagg13 1.0.0", title)
         self.assertIn("- **WaggBR/Wagg13Patch_Morphe**: `patches-1.0.0.mpp`", body)
 
+    def test_failed_app_reporting(self):
+        self.write_build_md("Skipped:\n- Tinder-Wagg13 17.34.1: stock APK download failed")
+        self.create_artifacts([])
+        title, body = generate_release_notes(build_dir=self.test_dir, build_md_path=self.mock_build_md)
+        self.assertIn("## Skipped / Failed", body)
+        self.assertIn("- Tinder-Wagg13 17.34.1: stock APK download failed", body)
+
 if __name__ == "__main__":
     unittest.main()

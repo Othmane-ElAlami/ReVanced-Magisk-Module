@@ -133,7 +133,10 @@ def generate_release_notes(build_dir="build", build_md_path="build.md", date_str
     if skipped:
         body_lines.append("\n## Skipped / Failed")
         for s in skipped:
-            body_lines.append(f"- {s}")
+            s_clean = s.strip()
+            if s_clean.startswith("- "):
+                s_clean = s_clean[2:].strip()
+            body_lines.append(f"- {s_clean}")
             
     body_lines.append(f"\n*Build Date: {date_str}*")
     

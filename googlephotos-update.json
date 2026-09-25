@@ -1,6 +1,6 @@
 {
-  "version": "v7.63.0.869312946 (patches 5.50.2)",
-  "versionCode": 146,
-  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/146/googlephotos-revanced-magisk-v7.63.0.869312946-arm64-v8a.zip",
+  "version": "v7.92.0.977185651 (patches 1.4.4.mpp)",
+  "versionCode": 178,
+  "zipUrl": "https://github.com/Othmane-ElAlami/ReVanced-Magisk-Module/releases/download/178/googlephotos-devanced-module-v7.92.0.977185651-all.zip",
   "changelog": "https://raw.githubusercontent.com/Othmane-ElAlami/ReVanced-Magisk-Module/update/build.md"
 }

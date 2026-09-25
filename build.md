@@ -2,6 +2,7 @@ GooglePhotos: 7.92.0.977185651
 Music-Morphe (arm64-v8a): 9.15.51  
 Music-Morphe (arm-v7a): 9.15.51  
 Reddit-Morphe: 2026.14.0  
+Tinder-Wagg13: 17.34.1  
 Twitter: 12.28.0-prod.01  
 YouTube-Morphe: 21.16.256  
 

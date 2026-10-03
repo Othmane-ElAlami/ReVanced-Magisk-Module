@@ -2,6 +2,7 @@ import os
 import shutil
 import unittest
 from generate_release_notes import generate_release_notes
+from format_telegram_summary import format_telegram_summary
 
 class TestGenerateReleaseNotes(unittest.TestCase):
     def setUp(self):
@@ -108,6 +109,75 @@ class TestGenerateReleaseNotes(unittest.TestCase):
         title, body = generate_release_notes(build_dir=self.test_dir, build_md_path=self.mock_build_md)
         self.assertIn("## Skipped / Failed", body)
         self.assertIn("- Tinder-Wagg13 17.34.1: stock APK download failed", body)
+
+class TestFormatTelegramSummary(unittest.TestCase):
+    def test_normal_link(self):
+        src = "[Normal](https://example.com)"
+        expected = '<a href="https://example.com">Normal</a>'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_text_surrounding_link(self):
+        src = "Text before [Link](https://example.com/path) text after"
+        expected = 'Text before <a href="https://example.com/path">Link</a> text after'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_ampersand_in_label_and_url(self):
+        src = "[Test & Stuff](https://example.com/?a=1&b=2)"
+        expected = '<a href="https://example.com/?a=1&amp;b=2">Test &amp; Stuff</a>'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_unsafe_text_surrounding_link(self):
+        src = "<unsafe> & [safe](https://example.com)"
+        expected = '&lt;unsafe&gt; &amp; <a href="https://example.com">safe</a>'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_malformed_url_scheme(self):
+        src = "[broken](not-a-valid-url)"
+        expected = "[broken](not-a-valid-url)"
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_unfinished_link(self):
+        src = "[unfinished](https://example.com"
+        expected = "[unfinished](https://example.com"
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_label_with_html_tags(self):
+        src = "[<tag> & 'quote'](https://example.com)"
+        expected = '<a href="https://example.com">&lt;tag&gt; &amp; \'quote\'</a>'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_url_with_quotes(self):
+        src = '[Link](https://example.com/foo"bar)'
+        expected = '<a href="https://example.com/foo&quot;bar">Link</a>'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_balanced_parentheses_in_url(self):
+        src = "[Wiki](https://en.wikipedia.org/wiki/Foo_(bar))"
+        expected = '<a href="https://en.wikipedia.org/wiki/Foo_(bar)">Wiki</a>'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_multiple_links_on_same_line(self):
+        src = "Visit [Site A](https://a.com) and [Site B](https://b.com)!"
+        expected = 'Visit <a href="https://a.com">Site A</a> and <a href="https://b.com">Site B</a>!'
+        self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_real_build_md_snippet(self):
+        src = (
+            "Install [Microg](https://github.com/MorpheApp/MicroG-RE/) for non-root YouTube and YT Music APKs\n"
+            "Use [zygisk-detach](https://github.com/j-hc/zygisk-detach) to detach YouTube and YT Music modules from Play Store\n\n"
+            "[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module)\n\n"
+            "Patches: crimera/piko-newx/patches-3.47.0.mpp\n"
+            "[Changelog](https://github.com/crimera/piko-newx/releases/tag/v3.47.0)"
+        )
+        expected = (
+            'Install <a href="https://github.com/MorpheApp/MicroG-RE/">Microg</a> for non-root YouTube and YT Music APKs\n'
+            'Use <a href="https://github.com/j-hc/zygisk-detach">zygisk-detach</a> to detach YouTube and YT Music modules from Play Store\n\n'
+            '<a href="https://github.com/j-hc/revanced-magisk-module">revanced-magisk-module</a>\n\n'
+            'Patches: crimera/piko-newx/patches-3.47.0.mpp\n'
+            '<a href="https://github.com/crimera/piko-newx/releases/tag/v3.47.0">Changelog</a>'
+        )
+        self.assertEqual(format_telegram_summary(src), expected)
+
 
 if __name__ == "__main__":
     unittest.main()

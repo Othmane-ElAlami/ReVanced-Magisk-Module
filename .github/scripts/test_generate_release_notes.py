@@ -1,8 +1,10 @@
+import io
 import os
 import shutil
 import unittest
+from unittest.mock import patch
 from generate_release_notes import generate_release_notes
-from format_telegram_summary import format_telegram_summary
+from format_telegram_summary import format_telegram_summary, main
 
 class TestGenerateReleaseNotes(unittest.TestCase):
     def setUp(self):
@@ -177,6 +179,26 @@ class TestFormatTelegramSummary(unittest.TestCase):
             '<a href="https://github.com/crimera/piko-newx/releases/tag/v3.47.0">Changelog</a>'
         )
         self.assertEqual(format_telegram_summary(src), expected)
+
+    def test_main_cli_file(self):
+        tmp_file = "test_cli_summary.md"
+        try:
+            with open(tmp_file, "w", encoding="utf-8") as f:
+                f.write("[Example](https://example.com)")
+            with patch("sys.argv", ["format_telegram_summary.py", tmp_file]):
+                with patch("sys.stdout", new=io.StringIO()) as fake_out:
+                    main()
+                    self.assertEqual(fake_out.getvalue(), '<a href="https://example.com">Example</a>')
+        finally:
+            if os.path.exists(tmp_file):
+                os.remove(tmp_file)
+
+    def test_main_cli_stdin(self):
+        with patch("sys.argv", ["format_telegram_summary.py"]):
+            with patch("sys.stdin", new=io.StringIO("[Stdin](https://stdin.com)")):
+                with patch("sys.stdout", new=io.StringIO()) as fake_out:
+                    main()
+                    self.assertEqual(fake_out.getvalue(), '<a href="https://stdin.com">Stdin</a>')
 
 
 if __name__ == "__main__":

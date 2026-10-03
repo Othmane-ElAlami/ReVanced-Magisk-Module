@@ -55,6 +55,7 @@ jobs:
         id: get_output
         run: |
           cp -f build.md build.tmp
+          python3 .github/scripts/format_telegram_summary.py build.md > telegram_summary.tmp
           python3 .github/scripts/generate_release_notes.py
       
       - name: Upload release
@@ -115,6 +116,9 @@ jobs:
             echo "no changes!"
           fi
 
+          git checkout -f "${GITHUB_SHA:-master}"
+          cp -f build.tmp build.md
+
       - name: Report to Telegram
         env:
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
@@ -164,7 +168,16 @@ jobs:
           done
 
           CURRENT_MSG="<b>New build!</b>"
-          BODY="$(python3 "${GITHUB_WORKSPACE:-..}/.github/scripts/format_telegram_summary.py" ../build.md)"
+          FORMAT_SCRIPT="${GITHUB_WORKSPACE:-..}/.github/scripts/format_telegram_summary.py"
+          if [ -f ../telegram_summary.tmp ]; then
+            BODY="$(cat ../telegram_summary.tmp)"
+          elif [ -f "$FORMAT_SCRIPT" ]; then
+            BODY="$(python3 "$FORMAT_SCRIPT" ../build.md 2>/dev/null || :)"
+          elif git show "${GITHUB_SHA:-origin/master}:.github/scripts/format_telegram_summary.py" >/dev/null 2>&1; then
+            BODY="$(git show "${GITHUB_SHA:-origin/master}:.github/scripts/format_telegram_summary.py" | python3 - ../build.md 2>/dev/null || :)"
+          else
+            BODY="$(sed -e 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' ../build.md 2>/dev/null || :)"
+          fi
 
           first_body_line=true
           while IFS= read -r line || [ -n "$line" ]; do

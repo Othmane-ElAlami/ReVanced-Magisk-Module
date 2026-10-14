@@ -55,7 +55,6 @@ jobs:
         id: get_output
         run: |
           cp -f build.md build.tmp
-          python3 .github/scripts/format_telegram_summary.py build.md > telegram_summary.tmp
           python3 .github/scripts/generate_release_notes.py
       
       - name: Upload release
@@ -167,93 +166,58 @@ jobs:
             fi
           done
 
-          CURRENT_MSG="<b>New build!</b>"
-          FORMAT_SCRIPT="${GITHUB_WORKSPACE:-..}/.github/scripts/format_telegram_summary.py"
-          if [ -f ../telegram_summary.tmp ]; then
-            BODY="$(cat ../telegram_summary.tmp)"
-          elif [ -f "$FORMAT_SCRIPT" ]; then
-            BODY="$(python3 "$FORMAT_SCRIPT" ../build.md 2>/dev/null || :)"
-          elif git show "${GITHUB_SHA:-origin/master}:.github/scripts/format_telegram_summary.py" >/dev/null 2>&1; then
-            BODY="$(git show "${GITHUB_SHA:-origin/master}:.github/scripts/format_telegram_summary.py" | python3 - ../build.md 2>/dev/null || :)"
-          else
-            BODY="$(sed -e 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' ../build.md 2>/dev/null || :)"
-          fi
-
-          first_body_line=true
-          while IFS= read -r line || [ -n "$line" ]; do
-            if [ "$first_body_line" = true ]; then
-              cand="${CURRENT_MSG}${NL}${NL}${line}"
-              first_body_line=false
-            else
-              cand="${CURRENT_MSG}${NL}${line}"
-            fi
-            if [ ${#cand} -le $MAX_LEN ]; then
-              CURRENT_MSG="$cand"
-            else
-              send_tg "$CURRENT_MSG"
-              CURRENT_MSG="<b>New build (continued):</b>${NL}${NL}${line}"
-            fi
-          done <<< "$BODY"
-
           HAS_MODULES=false
           HAS_APKS=false
           [ ${#MODULE_LINKS[@]} -gt 0 ] && HAS_MODULES=true
           [ ${#APK_LINKS[@]} -gt 0 ] && HAS_APKS=true
 
-          if [ "$HAS_MODULES" = true ] || [ "$HAS_APKS" = true ]; then
-            if [ -n "$CURRENT_MSG" ] && [ $(( ${#CURRENT_MSG} + 250 )) -gt $MAX_LEN ]; then
-              send_tg "$CURRENT_MSG"
-              CURRENT_MSG=""
-            fi
+          if [ "$HAS_MODULES" = false ] && [ "$HAS_APKS" = false ]; then
+            echo "No artifacts to report to Telegram."
+            exit 0
+          fi
 
-            if [ -z "$CURRENT_MSG" ]; then
-              CURRENT_MSG="<b>▼ Download Links:</b>"
-            else
-              CURRENT_MSG+="${NL}${NL}<b>▼ Download Links:</b>"
-            fi
+          CURRENT_MSG="<b>▼ Download Links:</b>"
+          CONT_LINKS="<b>▼ Download Links (continued):</b>"
 
-            CONT_LINKS="<b>▼ Download Links (continued):</b>"
+          if [ "$HAS_MODULES" = true ]; then
+            first_mod=true
+            for link in "${MODULE_LINKS[@]}"; do
+              if [ "$first_mod" = true ]; then
+                item="Modules:${NL}${link}"
+                first_mod=false
+              else
+                item="$link"
+              fi
+              if [ $(( ${#CURRENT_MSG} + 1 + ${#item} )) -le $MAX_LEN ]; then
+                CURRENT_MSG+="${NL}${item}"
+              else
+                send_tg "$CURRENT_MSG"
+                CURRENT_MSG="${CONT_LINKS}${NL}${NL}${item}"
+              fi
+            done
+          fi
 
-            if [ "$HAS_MODULES" = true ]; then
-              first_mod=true
-              for link in "${MODULE_LINKS[@]}"; do
-                if [ "$first_mod" = true ]; then
-                  item="Modules:${NL}${link}"
-                  first_mod=false
+          if [ "$HAS_APKS" = true ]; then
+            first_apk=true
+            for link in "${APK_LINKS[@]}"; do
+              if [ "$first_apk" = true ]; then
+                if [ "$HAS_MODULES" = true ]; then
+                  item="${NL}APKs:${NL}${link}"
                 else
-                  item="$link"
+                  item="APKs:${NL}${link}"
                 fi
-                if [ $(( ${#CURRENT_MSG} + 1 + ${#item} )) -le $MAX_LEN ]; then
-                  CURRENT_MSG+="${NL}${item}"
-                else
-                  send_tg "$CURRENT_MSG"
-                  CURRENT_MSG="${CONT_LINKS}${NL}${NL}${item}"
-                fi
-              done
-            fi
-
-            if [ "$HAS_APKS" = true ]; then
-              first_apk=true
-              for link in "${APK_LINKS[@]}"; do
-                if [ "$first_apk" = true ]; then
-                  if [ "$HAS_MODULES" = true ]; then
-                    item="${NL}APKs:${NL}${link}"
-                  else
-                    item="APKs:${NL}${link}"
-                  fi
-                  first_apk=false
-                else
-                  item="$link"
-                fi
-                if [ $(( ${#CURRENT_MSG} + 1 + ${#item} )) -le $MAX_LEN ]; then
-                  CURRENT_MSG+="${NL}${item}"
-                else
-                  send_tg "$CURRENT_MSG"
-                  item="${item#"${NL}"}"
-                  CURRENT_MSG="${CONT_LINKS}${NL}${NL}${item}"
-                fi
-              done
-            fi
+                first_apk=false
+              else
+                item="$link"
+              fi
+              if [ $(( ${#CURRENT_MSG} + 1 + ${#item} )) -le $MAX_LEN ]; then
+                CURRENT_MSG+="${NL}${item}"
+              else
+                send_tg "$CURRENT_MSG"
+                item="${item#"${NL}"}"
+                CURRENT_MSG="${CONT_LINKS}${NL}${NL}${item}"
+              fi
+            done
           fi
 
           if [ -n "$CURRENT_MSG" ]; then
